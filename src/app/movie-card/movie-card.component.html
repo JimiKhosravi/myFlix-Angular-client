@@ -11,11 +11,9 @@
       <button mat-button (click)="openMovieDetails(movie)">
         Details
       </button>
-      <a class="add-to-favorite-btn" (click)="toggleFavorite(movie._id)">
-        <mat-icon [class]="movieIsFavorite(movie._id) ? 'favorite' : 'non-favorite'">
-          {{ movieIsFavorite(movie._id) ? 'favorite' : 'favorite_border' }}
-        </mat-icon>
-      </a>
+      <button mat-icon-button aria-label="Example icon button with a heart icon" (click)="onToggleFavMovie(movie._id)">
+        <mat-icon class="favIcon">{{favoriteMovies.includes(movie._id) ? 'favorite' : 'favorite_border'}}</mat-icon>
+      </button>
     </mat-card-actions>
   </mat-card>
 </div>

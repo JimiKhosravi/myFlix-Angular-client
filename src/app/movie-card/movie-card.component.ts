@@ -4,6 +4,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { GenreComponent } from "../genre/genre.component";
 import { DirectorComponent } from "../director/director.component";
 import { MovieDetailsComponent } from "../movie-details/movie-details.component";
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: "app-movie-card",
@@ -15,7 +16,8 @@ export class MovieCardComponent {
   favoriteMovies: any[] = [];
   constructor(
     private fetchApiData: FetchApiDataService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    public snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -31,33 +33,35 @@ export class MovieCardComponent {
   }
 
   getFavoriteMovies(): void {
-    this.fetchApiData.getFavoriteMovies().subscribe((resp: any) => {
-      this.favoriteMovies = resp;
-      console.log(this.favoriteMovies);
-    });
+    this.fetchApiData.getUser().subscribe((res: any) => {
+      this.favoriteMovies = res.FavoriteMovies;
+      return this.favoriteMovies;
+    })
   }
 
-  addToFavorite(movieId: string): void {
-    this.fetchApiData.addFavoriteMovie(movieId).subscribe((resp: any) => {
-      this.getFavoriteMovies();
-    });
-  }
-
-  removeFromFavorite(movieId: string): void {
-    this.fetchApiData.removeFavoriteMovie(movieId).subscribe((resp: any) => {
-      this.getFavoriteMovies();
-    });
-  }
-
-  movieIsFavorite(movieId: string): boolean {
-    return this.favoriteMovies.includes(movieId);
-  }
-
-  toggleFavorite(movieId: string): void {
-    if (this.movieIsFavorite(movieId)) {
-      this.removeFromFavorite(movieId);
+  onToggleFavMovie(id: string): void {
+    if (!this.favoriteMovies.includes(id)) {
+      this.fetchApiData.addFavoriteMovie(id).subscribe((res) => {
+        this.favoriteMovies = res.FavoriteMovies;
+        this.snackBar.open('Movie added to favourites.', 'OK', {
+          duration: 3000
+        })
+      }, (res) => {
+        this.snackBar.open(res.message, 'OK', {
+          duration: 4000
+        });
+      })
     } else {
-      this.addToFavorite(movieId);
+      this.fetchApiData.removeFavoriteMovie(id).subscribe((res) => {
+        this.favoriteMovies = res.FavoriteMovies;
+        this.snackBar.open('Movie removed from favourites.', 'OK', {
+          duration: 3000
+        })
+      }, (res) => {
+        this.snackBar.open(res.message, 'OK', {
+          duration: 4000
+        });
+      })
     }
   }
 
