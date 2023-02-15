@@ -27,6 +27,13 @@ export class UserRegistrationFormComponent implements OnInit {
   }
 
   // This is the function responsible for sending the form inputs to the backend
+  /**
+  * register a new user
+  * 
+  * @remarks
+  * Make API call to register the user, if success, open snackBar to inform and close the login dialog,
+  * if fail, open snackBar to show error message
+  */
   registerUser(): void {
     this.fetchApiData.userRegistration(this.userData).subscribe((result) => {
       // Logic for a successful user registration goes here! (To be implemented)

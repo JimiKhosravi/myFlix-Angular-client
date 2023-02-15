@@ -20,6 +20,13 @@ export class UserLoginFormComponent implements OnInit {
   ) { }
   ngOnInit(): void { }
 
+  /**
+  * login user
+  * 
+  * @remarks
+  * Make API call to login the user, if success, set the localstorage and close the login dialog, if fail,
+  * open snackBar to show error message
+  */
   logInUser(): void {
     this.fetchApiData.userLogin(this.userData).subscribe(
       (result) => {

@@ -25,6 +25,10 @@ export class MovieCardComponent {
     this.getFavoriteMovies();
   }
 
+  /**
+   * Fetch movies via API and set movies variable to returned array of movie objects
+   * @returns an array holding movie objects
+   */
   getMovies(): void {
     this.fetchApiData.getAllMovies().subscribe((resp: any) => {
       this.movies = resp;
@@ -32,6 +36,11 @@ export class MovieCardComponent {
     });
   }
 
+  /**
+  * Fetch user info via API and set favoriteMovies variable to FavoriteMovies property of the returned 
+  * user object
+  * @returns an array holding movieIDs
+  */
   getFavoriteMovies(): void {
     this.fetchApiData.getUser().subscribe((res: any) => {
       this.favoriteMovies = res.FavoriteMovies;
@@ -39,6 +48,16 @@ export class MovieCardComponent {
     })
   }
 
+  /**
+  * Add/remove a movie into/from the favorite movies list
+  * 
+  * @remarks
+  * Check if the favoriteMovies variable contains the movieID, if no, make API call to add this ID into the 
+  * user's FavoriteMovie property, if yes, make API call to delete this ID. Ater the API call,
+  * set the favoriteMovies variable to the updated FavoriteMovies property. Open snackBar to inform.
+  * 
+  * @param id - movieID of the particular movie
+  */
   onToggleFavMovie(id: string): void {
     if (!this.favoriteMovies.includes(id)) {
       this.fetchApiData.addFavoriteMovie(id).subscribe((res) => {
@@ -74,6 +93,12 @@ export class MovieCardComponent {
     });
   }
 
+  /**
+  * Opens DirectorComponent as a dialog
+  * @param Name - name of the director
+  * @param Bio - bio of the director
+  * @param Birth - birthyear of the director
+  */
   openDirector(movie: any): void {
     const { Name, Birth, Bio } = movie.Director;
     this.dialog.open(DirectorComponent, {

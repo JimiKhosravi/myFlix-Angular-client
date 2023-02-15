@@ -19,6 +19,9 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(["profile"]);
   }
 
+  /**
+  * Logout the user. Navigate to welcome page and clear the localstorage.
+  */
   logOut(): void {
     localStorage.clear();
     this.router.navigate(["welcome"]);

@@ -28,6 +28,10 @@ export class UserProfileComponent implements OnInit {
     this.getUserInfo();
   }
 
+  /**
+   * Make API call to get user info and set the uer variable to the user object
+   * @returns object with user information
+   */
   getUserInfo(): void {
     this.fetchApiData.getUser().subscribe((resp: any) => {
       this.user = resp;
@@ -37,6 +41,12 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
+  /**
+   * Update user info
+   * 
+   * @remarks
+   * Make API call to update the user, reset the localstorage and reload the profile-page
+   */
   updateUserInfo(): void {
     this.fetchApiData.editUser(this.updatedUser).subscribe((result) => {
       console.log(result);
@@ -57,6 +67,12 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
+  /**
+   * Log out the user
+   * 
+   * @remarks
+   * Make API call to delete the user, navigate of welcome-page and remove user info from localStorage
+   */
   deleteAccount(): void {
     if (confirm("All your data will be lost - this cannnot be undone!")) {
       this.router.navigate(["welcome"]).then(() => {
